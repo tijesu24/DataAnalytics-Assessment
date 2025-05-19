@@ -9,7 +9,7 @@ WITH plan_details AS (
 		END AS type
 	FROM plans_plan 
 	WHERE is_regular_savings = 1
-		or is_a_fund         = 1
+		OR is_a_fund         = 1
 ), 
 
 -- Get the dates of last transaction of all users
@@ -24,26 +24,26 @@ last_transaction AS (
 -- Merge the table showing the information about the transactions 
 -- with the table showing information about the plans
 all_user_last_transc AS (
-select 
+SELECT 
 	pd.plan_id,
     pd.owner_id,
     pd.type,
     lt.last_transaction_date,
 	DATEDIFF(CURDATE(), lt.last_transaction_date) AS inactivity_days
-from plan_details AS pd
+FROM plan_details AS pd
 LEFT JOIN last_transaction AS lt ON lt.plan_id = pd.plan_id
 )
 
 -- Final table but filter out people that have been inactive for more than 365 days
-select 
+SELECT 
 	plan_id,
     owner_id,
     type,
 	-- To match the format in the expected output
     DATE_FORMAT(last_transaction_date, '%Y-%m-%d') AS last_transaction_date,
     inactivity_days
-from all_user_last_transc
-where inactivity_days is not null
-and inactivity_days > 365 
+FROM all_user_last_transc
+WHERE inactivity_days IS NOT NULL
+AND inactivity_days > 365 
         
     

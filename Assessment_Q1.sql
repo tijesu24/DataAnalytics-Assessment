@@ -14,13 +14,13 @@ savings_and_investment_plans AS (
         is_regular_savings,
         is_a_fund
 	FROM plans_plan
-    where is_regular_savings  = 1
-    or is_a_fund = 1
+    WHERE is_regular_savings  = 1
+    OR is_a_fund = 1
 ),
 
 
 -- Get all transactions for funded savings and investment plans by checking for 
--- plans where the user has deposited before
+-- plans WHERE the user has deposited before
 selected_plans_transac_merge AS (
 	SELECT 
 		trans.owner_id,
@@ -38,7 +38,7 @@ selected_plans_transac_merge AS (
 ),
 
 
--- Get the total number of deposits made by 
+-- Get the total number of deposits made by customers
 total_deposit_per_owner AS (
 	SELECT
 		owner_id,
@@ -61,7 +61,7 @@ ON td.owner_id = cd.owner_id
 
 -- Filter out customers with multiple funded savings and investment plans
 HAVING  td.savings_count >= 1
-        and td.investment_count >= 1
+        AND td.investment_count >= 1
 
 -- Order by deposits
 ORDER BY td.total_deposits
