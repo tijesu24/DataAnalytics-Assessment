@@ -1,7 +1,7 @@
 -- Get user details especially the number of months since account creation
 WITH customer_details as (
 	select 
-		id as customer_id,
+		id AS customer_id,
         CONCAT(first_name, ' ', last_name) AS name,
 		TIMESTAMPDIFF(
 		  MONTH,
@@ -13,19 +13,19 @@ WITH customer_details as (
 ),
 
 -- Calculate the amount of profit - approx 0.1% of transaction amount
-transc_wt_profit as (
+transc_wt_profit AS (
 	select 
 		owner_id,
-        confirmed_amount * 0.1 / 100 as profit
+        confirmed_amount * 0.1 / 100 AS profit
 	from savings_savingsaccount
 ),
 
 -- Determine the number of transactions and average profit for each user
-transc_agg as (
+transc_agg AS (
 	select 
 		owner_id,
-        COUNT(*) as total_transactions,
-        avg(profit) as avg_profit_per_transaction
+        COUNT(*) AS total_transactions,
+        avg(profit) AS avg_profit_per_transaction
 	from transc_wt_profit
     GROUP BY owner_id
     
@@ -42,11 +42,11 @@ select
 	-- The implication is that we cannot calculate CLV for a user that has
 	-- opened an account for less than a month
     (ta.total_transactions / NULLIF(cd.tenure_months,0)) * 
-    12 * ta.avg_profit_per_transaction as estimated_clv
+    12 * ta.avg_profit_per_transaction AS estimated_clv
     
-from customer_details as cd
-	RIGHT JOIN transc_agg as ta 
-    on ta.owner_id = cd.customer_id
+from customer_details AS cd
+	RIGHT JOIN transc_agg AS ta 
+    ON ta.owner_id = cd.customer_id
 
 ORDER BY estimated_clv DESC;
 		

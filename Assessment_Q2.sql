@@ -20,7 +20,7 @@ avg_counts AS (
 ), 
 
 -- Categorise the users
-avg_with_freq_text as (
+avg_with_freq_text AS (
   SELECT
 	  owner_id, avg_txn_per_month,
     CASE
