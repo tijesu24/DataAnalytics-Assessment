@@ -6,7 +6,7 @@ To solve this assessment, I broke down the problem into steps
 
 1.      Get a list of funded\* savings and investment plans  
 
-    * I defined funded plans as plans that have had at all least one deposit (i.e. sum of savings_savingsaccount.confirmed_amount for each plan is greater than 0)  
+    * I defined funded plans as plans that have had at least one deposit (i.e. sum of savings_savingsaccount.confirmed_amount for each plan is greater than 0)  
 
 2.      Find the number of funded savings and investment plans owned by each person  
 
